@@ -1,0 +1,1 @@
+1.  rect.animations.scale(1,1,10,700,10,1000); this will crash since fromSEcond and toSecond are same why?????
