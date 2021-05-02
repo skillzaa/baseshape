@@ -4,4 +4,3 @@ declare const log: {
     (message?: any, ...optionalParams: any[]): void;
 };
 declare const shapes: any;
-declare const newArc: any;

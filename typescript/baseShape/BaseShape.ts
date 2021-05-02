@@ -33,7 +33,7 @@ this.animations.data.forEach(animation => {
     //----STEP 3 -- Animate the data
     const retValue = animation.animate(attributeToAnimateValue,currentSecondMilli,readOnlyElementData);//wofffffff
     //----STEP 4 -- SAVE ATTRIBUTES
-this.attributes.setProperty(animation.attributeToAnimateName,retValue);
+this.attributes.setAttr(animation.attributeToAnimateName,retValue);
    
 }/////--filter no relevant animations
     //========================================== 
@@ -51,11 +51,11 @@ postDraw(){
 }
 
 public setAttr(attrName:string,attrValue:string|number|boolean):string|number|boolean{
-return Number(this.attributes.setProperty(attrName, attrValue));
+return Number(this.attributes.setAttr(attrName, attrValue));
 }
 
 public getAttr(attrName:string){
-    return Number(this.attributes.getProperty(attrName));
+    return (this.attributes.getAttr(attrName));
     }
   
 ////////////////////////////////---Animations---/////
