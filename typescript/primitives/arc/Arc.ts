@@ -1,12 +1,13 @@
-import BaseShape from "../../baseShape/BaseShape.js";
+// import BaseShape from "../../baseShape/BaseShape.js";
+const BaseShape2 = require('../../baseShape/BaseShape');
 
-export default class Arc extends BaseShape {
+module.exports = class Arc extends BaseShape2 {
 
-constructor() {
-super();
-this.attributes.add({ name: "openingAngle", value: 0, comments: "" });    
-this.attributes.add({ name: "closingAngle", value: 360, comments: "" });    
-this.attributes.add({ name: "filled", value: true, comments: "" }); 
+constructor(name) {
+super(name);
+this.attributes.add("openingAngle", 0);    
+this.attributes.add("closingAngle", 360);    
+// this.attributes.add("filled", true); 
 
 }
 

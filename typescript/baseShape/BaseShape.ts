@@ -1,15 +1,15 @@
 export {};
 const ArrayOfObjects = require('@bilzaa.com/arrayofobjects');
 const Generators = require('aninumber');
-const getBaseAttributes = require('getBaseAttributes');
+// const getBaseAttributes = require('getBaseAttributes');
 
-export default class BaseShape{  
+module.exports = class BaseShape{  
 public attributes:InstanceType<typeof ArrayOfObjects>; 
 animations: InstanceType<typeof ArrayOfObjects>;
 protected generators:InstanceType<typeof Generators>;
 
-constructor() {              
-this.attributes = getBaseAttributes(); 
+constructor(name) {              
+this.attributes = getBaseAttributes(name); 
 this.animations = new ArrayOfObjects();   
 this.generators = new Generators();
 }
@@ -18,8 +18,6 @@ preUpdate(){}
 postUpdate(){}
 
 public update(currentSecondMilli:number){
-//const currentSecond = Number((currentSecondMilli/1000).toFixed(1));  
-  // return true;
 //==================LLLLLOOOOPPPPP======================== 
 this.animations.data.forEach(animation => {
     //----STEP 1 -- GET DATA FROM ATTRIBUTES COLLECTION
@@ -35,10 +33,9 @@ this.animations.data.forEach(animation => {
     //----STEP 3 -- Animate the data
     const retValue = animation.animate(attributeToAnimateValue,currentSecondMilli,readOnlyElementData);//wofffffff
     //----STEP 4 -- SAVE ATTRIBUTES
-    //console.log("newValue",retValue,"time",currentSecondMilli);
-    this.attributes.setProperty(animation.attributeToAnimateName,retValue);//retData is aoo
+this.attributes.setProperty(animation.attributeToAnimateName,retValue);
    
-     }/////--filter no relevant animations
+}/////--filter no relevant animations
     //========================================== 
     });
 return true;    
@@ -115,3 +112,49 @@ rotate(fromSecond:number=1, toSecond:number=5,from:number=1,to:number=100):Count
   
 //////////////////////////classsss-----------------
 }
+
+//==========================================================
+//==========================================================
+//==========================================================
+function getBaseAttributes (name:string){
+const attributes = new ArrayOfObjects();
+
+//--The name--
+attributes.add(name, name);
+//--x,y,width,height--
+attributes.add("x", 100);
+attributes.add("y", 100);
+attributes.add("width", 100);
+attributes.add("height", 100);
+// attributes.add({ name: "offsetWidth", value: 0 });
+// attributes.add({ name: "offsetHeight", value: 0 });
+//--rotation--
+attributes.add("rotateClockwise", true);
+//---the angle at which);the obj is currently rotated--this is also rpm / rps
+attributes.add("currentRotateAngle", 0);   
+//--colors--
+attributes.add("color", "green");
+attributes.add("opacity", 1 );//----------???? transparency
+/**this just became border */
+attributes.add("lineWidth",5);//----------???? transparency
+/**there is no strokeStyle since the color is fillStyle as well as strokeStyle since we have border feature coming later so we do not need this confusion now */
+//attributes.add({ name: "strokeStyle", value: "#F0000" });
+//--shadows--
+attributes.add("shadowColor","grey");
+attributes.add("shadowBlur",0);
+attributes.add("shadowOffsetX",0);
+attributes.add("shadowOffsetY",0);  
+// if filled draw filled if not draw border only
+attributes.add("filled", true);  
+
+attributes.add("lineDashSize", 1);    
+attributes.add("lineDashGap", 0);
+
+attributes.add("drawBoundingRectangle", true);    
+attributes.add("boundingRectangleColor", "red");    
+attributes.add("boundingRectanglePadding", 20);    
+//--18 items
+return attributes;
+}
+//====================================================
+// export default getBaseAttributes;

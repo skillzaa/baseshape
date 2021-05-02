@@ -1,5 +1,6 @@
 //import ArrayOfObjects from "../../modules/ArrayOfObjects.js";
 const ArrayOfObjects = require('@bilzaa.com/arrayofobjects');
+
 module.exports = function getBaseAttributes (){
 const attributes = new ArrayOfObjects();
 
@@ -40,8 +41,5 @@ attributes.add({ name: "boundingRectanglePadding", value: 20});
 //--18 items
 return attributes;
 }
-//====================================================
-//====================================================
-//====================================================
 //====================================================
 // export default getBaseAttributes;

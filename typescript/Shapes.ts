@@ -1,8 +1,8 @@
-import Shape from '../shapes/shape/Shape.js';
-import Arc from './primitives/arc/Arc.js';
-import Text from './primitives/text/Text.js';
+// import Shape from '../shapes/shape/Shape.js';
+const Arc = require('./primitives/arc/Arc');
+const Text2 = require('./primitives/text/Text.js');
 
-export default class Shapes {
+module.exports = class Shapes {
 private shapesData:{};
     data:Shape[];
    
@@ -11,18 +11,18 @@ constructor() {
 this.shapesData = {};
 }
 
-addShape(shapeDataName="quad"):Shape {
-       const shape = new Shape(this.shapesData[shapeDataName]);
-        this.data.push(shape);
-        return shape;
-    }
-addArc():Arc {
-    const arc = new Arc();
+// addShape(shapeDataName="quad"):Shape {
+//        const shape = new Shape(this.shapesData[shapeDataName]);
+//         this.data.push(shape);
+//         return shape;
+//     }
+addArc(name):Arc {
+    const arc = new Arc(name);
     this.data.push(arc);
     return arc;
 }
-addText():Text {
-    const text = new Text();
+addText(name):Text {
+    const text = new Text2(name);
     this.data.push(text);
     return text;
 }

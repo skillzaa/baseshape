@@ -1,15 +1,14 @@
-import Shape from "../../baseShape/BaseShape.js";
-import Counter from "../../../animation/Counter.js";
+const BaseShape = require('../../baseShape/BaseShape');
 
-export default class Text extends Shape {
+module.exports = class Text extends BaseShape {
 // #hidden:string;
-constructor() {      
-super();  
+constructor(name) {      
+super(name);  
 // this.#hidden = "its hidden";
-this.attributes.add({name: "title", value: "Text" });
-this.attributes.add({ name: "color", value: "red" });  
-this.attributes.add({ name: "fontSize", value: 22 });  
-this.attributes.add({ name: "fontFamily", value: "Arial" });  
+this.attributes.add("title", "Text");
+// this.attributes.add("color", "red");  
+this.attributes.add("fontSize", 22);  
+this.attributes.add("fontFamily", "Arial");  
 
 }
 
