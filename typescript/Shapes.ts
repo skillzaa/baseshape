@@ -1,4 +1,5 @@
 // import Shape from '../shapes/shape/Shape.js';
+const BS = require('./baseShape/BaseShape');
 const Arc = require('./primitives/arc/Arc');
 const Text2 = require('./primitives/text/Text.js');
 
@@ -16,6 +17,12 @@ this.shapesData = {};
 //         this.data.push(shape);
 //         return shape;
 //     }
+/** we need this methos so that we can piece together the Base shape */
+private getBaseShape(name) {
+    const baseShape = new BS(name);
+    this.data.push(baseShape);
+    return baseShape;
+}
 addArc(name):Arc {
     const arc = new Arc(name);
     this.data.push(arc);

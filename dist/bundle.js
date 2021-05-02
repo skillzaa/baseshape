@@ -644,7 +644,7 @@ const newArc = shapes.addArc("newArc");
 shapes.addArc("arc2");
 shapes.addArc("arc3");
 shapes.addText("text1");
-log(newArc);
+log(shapes);
 
 },{"./Shapes":9}],12:[function(require,module,exports){
 "use strict";
