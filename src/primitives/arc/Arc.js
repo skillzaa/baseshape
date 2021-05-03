@@ -8,4 +8,7 @@ module.exports = class Arc extends BaseShape2 {
         this.attributes.add("closingAngle", 360);
         // this.attributes.add("filled", true); 
     }
+    draw(metal) {
+        const ans = metal.drawArc(this.attributes);
+    } //draw ends
 };

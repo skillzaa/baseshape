@@ -477,6 +477,7 @@ module.exports = class Validator {
 },{}],9:[function(require,module,exports){
 "use strict";
 // import Shape from '../shapes/shape/Shape.js';
+const BS = require('./baseShape/BaseShape');
 const Arc = require('./primitives/arc/Arc');
 const Text2 = require('./primitives/text/Text.js');
 module.exports = class Shapes {
@@ -489,6 +490,12 @@ module.exports = class Shapes {
     //         this.data.push(shape);
     //         return shape;
     //     }
+    /** we need this methos so that we can piece together the Base shape */
+    getBaseShape(name) {
+        const baseShape = new BS(name);
+        this.data.push(baseShape);
+        return baseShape;
+    }
     addArc(name) {
         const arc = new Arc(name);
         this.data.push(arc);
@@ -501,10 +508,10 @@ module.exports = class Shapes {
     }
 };
 
-},{"./primitives/arc/Arc":12,"./primitives/text/Text.js":13}],10:[function(require,module,exports){
+},{"./baseShape/BaseShape":10,"./primitives/arc/Arc":16,"./primitives/text/Text.js":17}],10:[function(require,module,exports){
 const ArrayOfObjects = require('@bilzaa.com/arrayofobjects');
 const Generators = require('aninumber');
-// const getBaseAttributes = require('getBaseAttributes');
+const getBaseAttributes = require('./baseAttributeCollection');
 module.exports = class BaseShape {
     constructor(name) {
         this.attributes = getBaseAttributes(name);
@@ -594,7 +601,12 @@ module.exports = class BaseShape {
 //==========================================================
 //==========================================================
 //==========================================================
-function getBaseAttributes(name) {
+
+},{"./baseAttributeCollection":11,"@bilzaa.com/arrayofobjects":1,"aninumber":4}],11:[function(require,module,exports){
+"use strict";
+//import ArrayOfObjects from "../../modules/ArrayOfObjects.js";
+const ArrayOfObjects = require('@bilzaa.com/arrayofobjects');
+module.exports = function getBaseAttributes(name) {
     const attributes = new ArrayOfObjects();
     //--The name--
     attributes.add(name, name);
@@ -603,8 +615,6 @@ function getBaseAttributes(name) {
     attributes.add("y", 100);
     attributes.add("width", 100);
     attributes.add("height", 100);
-    // attributes.add({ name: "offsetWidth", value: 0 });
-    // attributes.add({ name: "offsetHeight", value: 0 });
     //--rotation--
     attributes.add("rotateClockwise", true);
     //---the angle at which);the obj is currently rotated--this is also rpm / rps
@@ -630,23 +640,236 @@ function getBaseAttributes(name) {
     attributes.add("boundingRectanglePadding", 20);
     //--18 items
     return attributes;
-}
+};
 //====================================================
 // export default getBaseAttributes;
 
-},{"@bilzaa.com/arrayofobjects":1,"aninumber":4}],11:[function(require,module,exports){
+},{"@bilzaa.com/arrayofobjects":1}],12:[function(require,module,exports){
 "use strict";
 const Shapes = require('./Shapes');
+const Metal = require('./metal/Metal');
+const metal = new Metal();
 // import {Shapes} from './dist/bundle.js';
 const log = console.log;
 const shapes = new Shapes();
 const newArc = shapes.addArc("newArc");
 shapes.addArc("arc2");
 shapes.addArc("arc3");
-shapes.addText("text1");
-log(shapes);
+const text1 = shapes.addText("text1");
+//log(shapes);
+newArc.draw(metal);
+text1.setAttr("color", "red");
+text1.draw(metal);
 
-},{"./Shapes":9}],12:[function(require,module,exports){
+},{"./Shapes":9,"./metal/Metal":13}],13:[function(require,module,exports){
+"use strict";
+const drawArc = require('./drawArc');
+const drawText = require('./drawText');
+module.exports = class Metal {
+    constructor(canvasName = "bilzaaCanvas") {
+        this.load(canvasName);
+        this.drawArc = drawArc;
+        this.drawText = drawText;
+    }
+    //....................
+    load(canvasName = "bilzaaCanvas") {
+        try {
+            this.canvas = document.getElementById(canvasName);
+            this.ctx = this.canvas.getContext('2d');
+            this.ctx.canvas.width = window.innerWidth;
+            this.ctx.canvas.height = window.innerHeight;
+        }
+        catch (err) {
+            throw new Error("Canvas Elements not found");
+            ;
+        }
+    }
+    //....................
+    clear() {
+        this.ctx.fillStyle = "#f5ecc3";
+        //clear the canvas
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    } //fn
+    clearCanvas(fillStyle = "#ffffff") {
+        this.saveCtx();
+        this.ctx.fillStyle = fillStyle;
+        //clear the canvas
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.restoreCtx();
+    } //fn  
+    drawRectangleBorder(attributes) {
+        this.ctx.save();
+        this.ctx.beginPath();
+        this.ctx.globalAlpha = attributes.getAttr("opacity");
+        this.ctx.lineWidth = attributes.getAttr("borderWidth");
+        this.ctx.lineJoin = "round"; //attributes.getAttr("borderWidth");
+        this.ctx.strokeStyle = attributes.getAttr("borderColor");
+        if (attributes.getAttr("dashedBorder") === true) {
+            this.ctx.setLineDash([
+                attributes.getAttr("dashSize"),
+                attributes.getAttr("gapBetweenDashes")
+            ]);
+        }
+        this.ctx.rect((attributes.getAttr("x") - (attributes.getAttr("borderWidth") / 2)), attributes.getAttr("y") - (attributes.getAttr("borderWidth") / 2), attributes.getAttr("width") + (attributes.getAttr("borderWidth")), attributes.getAttr("height") + (attributes.getAttr("borderWidth")));
+        this.ctx.stroke();
+        this.ctx.restore();
+    }
+    saveCtx() {
+        this.ctx.save();
+    }
+    restoreCtx() {
+        this.ctx.restore();
+    }
+    drawRectangle(attributes) {
+        this.ctx.save();
+        this.ctx.globalAlpha = attributes.getAttr("opacity");
+        if (attributes.getAttr("filled") == true) {
+            this.ctx.fillStyle = attributes.getAttr("color");
+            this.ctx.fillRect(attributes.getAttr("x"), attributes.getAttr("y"), attributes.getAttr("width"), attributes.getAttr("height"));
+        }
+        else {
+            this.ctx.strokeStyle = attributes.getAttr("color");
+            this.ctx.strokeRect(attributes.getAttr("x"), attributes.getAttr("y"), attributes.getAttr("width"), attributes.getAttr("height"));
+        }
+        this.ctx.restore();
+    }
+    drawCircle(attributes) {
+        this.ctx.save();
+        this.ctx.beginPath();
+        this.ctx.arc(attributes.getAttr("x"), attributes.getAttr("y"), attributes.getAttr("radius"), attributes.getAttr("openingAngle"), attributes.getAttr("closingAngle"));
+        /**the color of the circle is the color of fill as well as stroke-- later we will have border color but for now dont confuse the issue */
+        this.ctx.lineWidth = attributes.getAttr("lineWidth");
+        if (attributes.getAttr("filled") == true) {
+            this.ctx.fillStyle = attributes.getAttr("color");
+            this.ctx.fill();
+        }
+        else {
+            this.ctx.strokeStyle = attributes.getAttr("color");
+            this.ctx.stroke();
+        }
+        this.ctx.restore();
+    } //draw circle
+    drawTriangle(attributes) {
+        this.ctx.save();
+        // this.ctx.fillStyle = attributes.getAttr("color");
+        this.ctx.beginPath();
+        this.ctx.lineWidth = attributes.getAttr("lineWidth");
+        //move to left-bottom
+        this.ctx.moveTo(attributes.getAttr("x"), attributes.getAttr("y") + attributes.getAttr("height"));
+        //line to right bottom cornot 
+        this.ctx.lineTo(attributes.getAttr("x") + attributes.getAttr("width"), attributes.getAttr("y") + attributes.getAttr("height"));
+        //top cornor
+        this.ctx.lineTo(attributes.getAttr("x") + attributes.getAttr("width") / 2, attributes.getAttr("y"));
+        this.ctx.lineTo(attributes.getAttr("x"), attributes.getAttr("y") + attributes.getAttr("height"));
+        //  this.ctx.fill();
+        if (attributes.getAttr("filled") == true) {
+            this.ctx.fillStyle = attributes.getAttr("color");
+            this.ctx.fill();
+        }
+        else {
+            this.ctx.strokeStyle = attributes.getAttr("color");
+            this.ctx.stroke();
+        }
+        this.ctx.restore();
+    }
+    getCtxValues(attributes) {
+        //fillstyle is for internal use dont show it to users
+        this.ctx.fillStyle = attributes.getItem("color").value;
+        this.ctx.strokeStyle = attributes.getItem("color").value;
+        this.ctx.shadowColor = attributes.getItem("shadowColor").value;
+        this.ctx.shadowBlur = attributes.getItem("shadowBlur").value;
+        this.ctx.shadowOffsetX = attributes.getItem("shadowOffsetX").value;
+        this.ctx.shadowOffsetY = attributes.getItem("shadowOffsetY").value;
+        this.ctx.lineWidth = attributes.getItem("lineWidth").value;
+        this.ctx.setLineDash([attributes.getAttr("lineDashSize"), attributes.getAttr("lineDashGap")]);
+    } //getAttributes
+    translateCanvas(attributes) {
+        this.ctx.translate(attributes.getItem("x").value + (attributes.getItem("width").value / 2), attributes.getItem("y").value + (attributes.getItem("height").value / 2));
+    }
+    unTranslateCanvas(attributes) {
+        this.ctx.translate(-(attributes.getItem("x").value + (attributes.getItem("width").value / 2)), -(attributes.getItem("y").value + (attributes.getItem("height").value / 2)));
+    }
+    rotateCanvas(attributes) {
+        this.ctx.rotate((attributes.getItem("currentRotateAngle").value) * Math.PI / 180);
+    }
+    drawEllipse() {
+        this.ctx.ellipse(100, 100, 50, 75, 45 * Math.PI / 180, 0, 2 * Math.PI);
+    }
+    drawLine(attributes) {
+        this.ctx.save();
+        this.getCtxValues(attributes);
+        this.ctx.setLineDash([attributes.getAttr("lineDashSize"), attributes.getAttr("lineDashGap")]); //this is not in getCtxValues since its not that
+        this.ctx.beginPath();
+        this.ctx.moveTo(attributes.getAttr("x"), attributes.getAttr("y"));
+        this.ctx.lineTo(attributes.getAttr("xEnd"), attributes.getAttr("yEnd"));
+        this.ctx.stroke();
+        this.ctx.restore();
+    }
+    drawHeart(attributes) {
+        this.ctx.beginPath();
+        const x = attributes.getAttr("x");
+        const y = attributes.getAttr("y");
+        this.ctx.moveTo(x, y);
+        this.ctx.bezierCurveTo(x + 0, y + 3, x + 5, y + 15, x + 25, y + 15);
+        this.ctx.bezierCurveTo(x - 55, y + 15, 20, 62.5, 20, 62.5);
+        this.ctx.bezierCurveTo(20, 80, 40, 102, 75, 120);
+        this.ctx.bezierCurveTo(110, 102, 130, 80, 130, 62.5);
+        this.ctx.bezierCurveTo(130, 62.5, 130, 25, 100, 25);
+        this.ctx.bezierCurveTo(85, 25, 75, 37, 75, 40);
+        this.ctx.fill();
+    }
+    //////////////////////////
+    drawQuad(attributes) {
+        // this.ctx.save();
+        // this.ctx.globalAlpha = attributes.getAttr("opacity"); 
+        // if(attributes.getAttr("filled") == true){
+        //   this.ctx.fillStyle = attributes.getAttr("color");
+        //   this.ctx.fillRect(attributes.getAttr("x"), attributes.getAttr("y"), attributes.getAttr("width"), attributes.getAttr("height"));  
+        // }else{
+        //   this.ctx.strokeStyle = attributes.getAttr("color");
+        //   this.ctx.strokeRect(attributes.getAttr("x"), attributes.getAttr("y"), attributes.getAttr("width"), attributes.getAttr("height"));  
+        this.ctx.beginPath();
+        this.ctx.beginPath();
+        this.ctx.moveTo(attributes.getAttr("x"), attributes.getAttr("y"));
+        this.ctx.lineTo(attributes.getAttr("x") + attributes.getAttr("rtx"), attributes.getAttr("y") + attributes.getAttr("rty")); //top line
+        this.ctx.lineTo(attributes.getAttr("x") + attributes.getAttr("rbx"), attributes.getAttr("y") + attributes.getAttr("rby")); //right line
+        this.ctx.lineTo(attributes.getAttr("x") + attributes.getAttr("lbx"), attributes.getAttr("y") + attributes.getAttr("lby")); //bottom line
+        this.ctx.lineTo(attributes.getAttr("x"), attributes.getAttr("y")); //left line
+        this.ctx.fill();
+    }
+};
+
+},{"./drawArc":14,"./drawText":15}],14:[function(require,module,exports){
+"use strict";
+module.exports = function drawArc(attributes) {
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.getCtxValues(attributes);
+    this.ctx.arc(attributes.getAttr("x"), attributes.getAttr("y"), attributes.getAttr("width") / 2, attributes.getAttr("openingAngle") * Math.PI / 180, attributes.getAttr("closingAngle") * Math.PI / 180);
+    /**the color of the circle is the color of fill as well as stroke-- later we will have border color but for now dont confuse the issue */
+    this.ctx.lineWidth = attributes.getAttr("lineWidth");
+    if (attributes.getAttr("filled") == true) {
+        this.ctx.fillStyle = attributes.getAttr("color");
+        this.ctx.fill();
+    }
+    else {
+        this.ctx.strokeStyle = attributes.getAttr("color");
+        this.ctx.stroke();
+    }
+    this.ctx.restore();
+}; //fn
+
+},{}],15:[function(require,module,exports){
+"use strict";
+module.exports = function drawText(attributes) {
+    this.ctx.save();
+    this.ctx.fillStyle = attributes.getAttr("color");
+    this.ctx.font = `${attributes.getAttr("fontSize")}px ${attributes.getAttr("fontFamily")}`;
+    this.ctx.fillText(attributes.getAttr("title"), attributes.getAttr("x"), attributes.getAttr("y"));
+    this.ctx.restore();
+};
+
+},{}],16:[function(require,module,exports){
 "use strict";
 // import BaseShape from "../../baseShape/BaseShape.js";
 const BaseShape2 = require('../../baseShape/BaseShape');
@@ -657,9 +880,12 @@ module.exports = class Arc extends BaseShape2 {
         this.attributes.add("closingAngle", 360);
         // this.attributes.add("filled", true); 
     }
+    draw(metal) {
+        const ans = metal.drawArc(this.attributes);
+    } //draw ends
 };
 
-},{"../../baseShape/BaseShape":10}],13:[function(require,module,exports){
+},{"../../baseShape/BaseShape":10}],17:[function(require,module,exports){
 "use strict";
 const BaseShape = require('../../baseShape/BaseShape');
 module.exports = class Text extends BaseShape {
@@ -672,6 +898,9 @@ module.exports = class Text extends BaseShape {
         this.attributes.add("fontSize", 22);
         this.attributes.add("fontFamily", "Arial");
     }
+    draw(metal) {
+        const ans = metal.drawText(this.attributes);
+    } //draw ends
     widen(fromSecond = 1, toSecond = 10, fromWidth = 100, toWidth = 200) {
         const w = this.generators.getCounter("fontSize", fromSecond, toSecond, fromWidth, toWidth, []);
         this.animations.add(w);
@@ -684,4 +913,4 @@ module.exports = class Text extends BaseShape {
     }
 };
 
-},{"../../baseShape/BaseShape":10}]},{},[11]);
+},{"../../baseShape/BaseShape":10}]},{},[12]);
