@@ -2,10 +2,11 @@
 const BS = require('./baseShape/BaseShape');
 const Arc = require('./primitives/arc/Arc');
 const Text2 = require('./primitives/text/Text.js');
+const Rectangle = require('./primitives/rectangle/Rectangle');
 
 module.exports = class Shapes {
 private shapesData:{};
-    data:Shape[];
+    data:typeof BS[];
    
 constructor() {
         this.data = [];
@@ -23,10 +24,15 @@ private getBaseShape(name) {
     this.data.push(baseShape);
     return baseShape;
 }
-addArc(name):Arc {
+addArc(name):typeof  Arc {
     const arc = new Arc(name);
     this.data.push(arc);
     return arc;
+}
+addRectangle(name):typeof Rectangle {
+    const rec = new Rectangle(name);
+    this.data.push(rec);
+    return rec;
 }
 addText(name):Text {
     const text = new Text2(name);

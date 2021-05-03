@@ -7,4 +7,5 @@ declare const log: {
 };
 declare const shapes: any;
 declare const newArc: any;
+declare const rectangle01: any;
 declare const text1: any;

@@ -6,10 +6,12 @@ const log = console.log;
 const shapes = new Shapes();
 const newArc = shapes.addArc("newArc");
 shapes.addArc("arc2");
-shapes.addArc("arc3");
+const rectangle01 = shapes.addRectangle("rectangle01");
 const text1 = shapes.addText("text1");
 //log(shapes);
 
 newArc.draw(metal);
 text1.setAttr("color","red");
 text1.draw(metal);
+rectangle01.setAttr("color","red");
+rectangle01.draw(metal);

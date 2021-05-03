@@ -480,6 +480,7 @@ module.exports = class Validator {
 const BS = require('./baseShape/BaseShape');
 const Arc = require('./primitives/arc/Arc');
 const Text2 = require('./primitives/text/Text.js');
+const Rectangle = require('./primitives/rectangle/Rectangle');
 module.exports = class Shapes {
     constructor() {
         this.data = [];
@@ -501,6 +502,11 @@ module.exports = class Shapes {
         this.data.push(arc);
         return arc;
     }
+    addRectangle(name) {
+        const rec = new Rectangle(name);
+        this.data.push(rec);
+        return rec;
+    }
     addText(name) {
         const text = new Text2(name);
         this.data.push(text);
@@ -508,7 +514,7 @@ module.exports = class Shapes {
     }
 };
 
-},{"./baseShape/BaseShape":10,"./primitives/arc/Arc":16,"./primitives/text/Text.js":17}],10:[function(require,module,exports){
+},{"./baseShape/BaseShape":10,"./primitives/arc/Arc":16,"./primitives/rectangle/Rectangle":17,"./primitives/text/Text.js":18}],10:[function(require,module,exports){
 const ArrayOfObjects = require('@bilzaa.com/arrayofobjects');
 const Generators = require('aninumber');
 const getBaseAttributes = require('./baseAttributeCollection');
@@ -654,12 +660,13 @@ const log = console.log;
 const shapes = new Shapes();
 const newArc = shapes.addArc("newArc");
 shapes.addArc("arc2");
-shapes.addArc("arc3");
+const rectangle01 = shapes.addRectangle("rectangle01");
 const text1 = shapes.addText("text1");
 //log(shapes);
 newArc.draw(metal);
 text1.setAttr("color", "red");
 text1.draw(metal);
+rectangle01.draw(metal);
 
 },{"./Shapes":9,"./metal/Metal":13}],13:[function(require,module,exports){
 "use strict";
@@ -886,6 +893,20 @@ module.exports = class Arc extends BaseShape2 {
 };
 
 },{"../../baseShape/BaseShape":10}],17:[function(require,module,exports){
+"use strict";
+//import Shape from "../../../shapesModuleOld/shape/Shape.js";
+const BaseShape3 = require('../../baseShape/BaseShape');
+module.exports = class Rectangle extends BaseShape3 {
+    constructor(name) {
+        super(name);
+        //    this.animations = new RectangleAnimations();
+    }
+    draw(metal) {
+        const ans = metal.drawRectangle(this.attributes);
+    } //draw ends
+};
+
+},{"../../baseShape/BaseShape":10}],18:[function(require,module,exports){
 "use strict";
 const BaseShape = require('../../baseShape/BaseShape');
 module.exports = class Text extends BaseShape {
