@@ -1,10 +1,10 @@
 //import { terser } from "rollup-plugin-terser";
 //import uglifyjs from 'uglifyjs';
 export default {
-	input: 'src/bilzaa2d.js',
+	input: 'src/Shapes.js',
 //	plugins: [terser()],
 	output: {
-	  file: 'dist/bilzaa2d.js',
+	  file: 'dist/Shapes.js',
 	  format: 'es',
 	}
   };

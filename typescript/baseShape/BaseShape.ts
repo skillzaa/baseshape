@@ -5,12 +5,13 @@ const getBaseAttributes = require('./baseAttributeCollection');
 
 module.exports = class BaseShape{  
 public attributes:InstanceType<typeof ArrayOfObjects>; 
-animations: InstanceType<typeof ArrayOfObjects>;
+// animations: InstanceType<typeof ArrayOfObjects>;
+animations: object[];
 protected generators:InstanceType<typeof Generators>;
 
 constructor(name) {              
 this.attributes = getBaseAttributes(name); 
-this.animations = new ArrayOfObjects();   
+this.animations = [];   
 this.generators = new Generators();
 }
 
@@ -19,7 +20,7 @@ postUpdate(){}
 
 public update(currentSecondMilli:number){
 //==================LLLLLOOOOPPPPP======================== 
-this.animations.data.forEach(animation => {
+this.animations.forEach(animation => {
     //----STEP 1 -- GET DATA FROM ATTRIBUTES COLLECTION
     //filter out not relavant seq here
     if( (currentSecondMilli >= animation.fromSecond)
@@ -60,53 +61,53 @@ public getAttr(attrName:string){
   
 ////////////////////////////////---Animations---/////
 moveHorizontal(fromSecond=1,toSecond=5,from=1,to=100):Counter{
-const l = this.generators.getCounter("x",fromSecond,toSecond,from,to);
-this.animations.add(l);
+const l = this.generators.addCounter("x",fromSecond,toSecond,from,to);
+this.animations.push(l);
 return l;  
 }
 // //---------------------------------
 moveVerticle(fromSecond=1,toSecond=5,fromY=1,toY=100):Counter{
-  const l = this.generators.getCounter("y",fromSecond,toSecond,from,to);
-  this.animations.add(l);
+  const l = this.generators.addCounter("y",fromSecond,toSecond,from,to);
+  this.animations.push(l);
   return l;      
 }
 // //---------------------------------
 moveDiagonal(fromSecond=1,toSecond=5,fromX=1,toX=100,fromY=1,toY=100):boolean{
-  const lX = this.generators.getCounter("x",fromSecond,toSecond,fromX,toX);
-  this.animations.add(lX);   
+  const lX = this.generators.addCounter("x",fromSecond,toSecond,fromX,toX);
+  this.animations.push(lX);   
 
-  const ly = this.generators.getCounter("y",fromSecond,toSecond,fromY,toY);
-  this.animations.add(ly);   
+  const ly = this.generators.addCounter("y",fromSecond,toSecond,fromY,toY);
+  this.animations.push(ly);   
   return true;    
 }
 
 widen(fromSecond:number=1,toSecond:number=10,fromWidth:number=100,toWidth:number=200):Counter{
-  const w = this.generators.getCounter(
+  const w = this.generators.addCounter(
       "width",fromSecond,toSecond,fromWidth, toWidth,[]);
-  this.animations.add(w);
+  this.animations.push(w);
   return w;    
 }
 heighten(fromSecond:number,toSecond:number,fromHeight:number,toHeight:number):Counter{
-  const h = this.generators.getCounter(
+  const h = this.generators.addCounter(
     "height",fromSecond,toSecond,fromHeight,toHeight,[]);
-  this.animations.add(h);    
+  this.animations.push(h);    
   return h;    
 }
 scale(fromSecond:number,toSecond:number,fromWidth:number,toWidth:number,fromHeight:number,toHeight:number):boolean{
-  const w = this.generators.getCounter(
+  const w = this.generators.addCounter(
       "width",fromSecond,toSecond,fromWidth, toWidth,[]);
-  this.animations.add(w);    
+  this.animations.push(w);    
 //----------------------------
-  const h = this.generators.getCounter(
+  const h = this.generators.addCounter(
       "height",fromSecond,toSecond,fromHeight,toHeight,[]);
-  this.animations.add(h);   
+  this.animations.push(h);   
   return true;    
 }
 rotate(fromSecond:number=1, toSecond:number=5,from:number=1,to:number=100):Counter{
       
-  const w = this.generators.getCounter(
+  const w = this.generators.addCounter(
       "currentRotateAngle",fromSecond,toSecond,from,to,[]);
-  this.animations.add(w);    
+  this.animations.push(w);    
   return w;
 }
   

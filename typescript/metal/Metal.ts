@@ -1,5 +1,6 @@
 const drawArc = require('./drawArc');
 const drawText = require('./drawText');
+const drawRectangle = require('./drawRectangle');
 
 module.exports =  class Metal {
     ctx:object;
@@ -9,6 +10,7 @@ module.exports =  class Metal {
    this.load(canvasName);
    this.drawArc = drawArc;
    this.drawText = drawText;
+   this.drawRectangle = drawRectangle;
   }
   //....................
   load(canvasName = "bilzaaCanvas"){
@@ -69,20 +71,7 @@ module.exports =  class Metal {
   restoreCtx(){
     this.ctx.restore();
   }
-  drawRectangle(attributes){
-    this.ctx.save();
-    this.ctx.globalAlpha = attributes.getAttr("opacity"); 
-    if(attributes.getAttr("filled") == true){
-      this.ctx.fillStyle = attributes.getAttr("color");
-      this.ctx.fillRect(attributes.getAttr("x"), attributes.getAttr("y"), attributes.getAttr("width"), attributes.getAttr("height"));  
-    }else{
-      this.ctx.strokeStyle = attributes.getAttr("color");
-      this.ctx.strokeRect(attributes.getAttr("x"), attributes.getAttr("y"), attributes.getAttr("width"), attributes.getAttr("height"));  
-    }
-    
-    
-    this.ctx.restore();
-  }
+
   
   drawCircle(attributes){
   this.ctx.save();

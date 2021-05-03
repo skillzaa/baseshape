@@ -1,16 +1,15 @@
 {
-  "name": "baseshape",
-  "version": "0.0.1",
+  "name": "shapes99",
+  "version": "0.0.7",
   "description": "",
-  "main": "./src/shapes.js",
+  "main": "./src/Shapes.js",
   "type": "module",
   "scripts": {
     "dist": "rollup -c",
     "test": "jest ",
-    "bro" : "browserify ./src/index.js -o ./dist/bundle.js",
-    "00prebro" : "tsc"
+    "bro" : "browserify ./src/index.js -o ./dist/bundle.js"
   },
-  "author": "",
+  "author": "Bilal Tariq",
   "license": "ISC",
   "devDependencies": {
     "@rollup/plugin-commonjs": "11.0.1",
@@ -21,6 +20,6 @@
   },
   "dependencies": {
     "@bilzaa.com/arrayofobjects": "^1.1.5",
-    "aninumber": "^1.0.0"
+    "aninumber": "^1.0.1"
   }
 }

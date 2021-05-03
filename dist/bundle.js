@@ -514,7 +514,7 @@ module.exports = class Shapes {
     }
 };
 
-},{"./baseShape/BaseShape":10,"./primitives/arc/Arc":16,"./primitives/rectangle/Rectangle":17,"./primitives/text/Text.js":18}],10:[function(require,module,exports){
+},{"./baseShape/BaseShape":10,"./primitives/arc/Arc":17,"./primitives/rectangle/Rectangle":18,"./primitives/text/Text.js":19}],10:[function(require,module,exports){
 const ArrayOfObjects = require('@bilzaa.com/arrayofobjects');
 const Generators = require('aninumber');
 const getBaseAttributes = require('./baseAttributeCollection');
@@ -663,8 +663,9 @@ shapes.addArc("arc2");
 const rectangle01 = shapes.addRectangle("rectangle01");
 const text1 = shapes.addText("text1");
 //log(shapes);
-newArc.draw(metal);
+rectangle01.setAttr("color", "brown");
 text1.setAttr("color", "red");
+newArc.draw(metal);
 text1.draw(metal);
 rectangle01.draw(metal);
 
@@ -672,11 +673,13 @@ rectangle01.draw(metal);
 "use strict";
 const drawArc = require('./drawArc');
 const drawText = require('./drawText');
+const drawRectangle = require('./drawRectangle');
 module.exports = class Metal {
     constructor(canvasName = "bilzaaCanvas") {
         this.load(canvasName);
         this.drawArc = drawArc;
         this.drawText = drawText;
+        this.drawRectangle = drawRectangle;
     }
     //....................
     load(canvasName = "bilzaaCanvas") {
@@ -725,19 +728,6 @@ module.exports = class Metal {
         this.ctx.save();
     }
     restoreCtx() {
-        this.ctx.restore();
-    }
-    drawRectangle(attributes) {
-        this.ctx.save();
-        this.ctx.globalAlpha = attributes.getAttr("opacity");
-        if (attributes.getAttr("filled") == true) {
-            this.ctx.fillStyle = attributes.getAttr("color");
-            this.ctx.fillRect(attributes.getAttr("x"), attributes.getAttr("y"), attributes.getAttr("width"), attributes.getAttr("height"));
-        }
-        else {
-            this.ctx.strokeStyle = attributes.getAttr("color");
-            this.ctx.strokeRect(attributes.getAttr("x"), attributes.getAttr("y"), attributes.getAttr("width"), attributes.getAttr("height"));
-        }
         this.ctx.restore();
     }
     drawCircle(attributes) {
@@ -846,7 +836,7 @@ module.exports = class Metal {
     }
 };
 
-},{"./drawArc":14,"./drawText":15}],14:[function(require,module,exports){
+},{"./drawArc":14,"./drawRectangle":15,"./drawText":16}],14:[function(require,module,exports){
 "use strict";
 module.exports = function drawArc(attributes) {
     this.ctx.save();
@@ -868,6 +858,36 @@ module.exports = function drawArc(attributes) {
 
 },{}],15:[function(require,module,exports){
 "use strict";
+module.exports = function drawRectangle(attributes) {
+    this.saveCtx();
+    this.getCtxValues(attributes);
+    this.translateCanvas(attributes);
+    this.rotateCanvas(attributes);
+    this.unTranslateCanvas(attributes);
+    //}   
+    //--------------draw rect-- if visible
+    if ((attributes.getAttr("transparent") === false)) {
+        /////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////
+        this.ctx.globalAlpha = attributes.getAttr("opacity");
+        if (attributes.getAttr("filled") == true) {
+            this.ctx.fillStyle = attributes.getAttr("color");
+            this.ctx.fillRect(attributes.getAttr("x"), attributes.getAttr("y"), attributes.getAttr("width"), attributes.getAttr("height"));
+        }
+        else {
+            this.ctx.strokeStyle = attributes.getAttr("color");
+            this.ctx.strokeRect(attributes.getAttr("x"), attributes.getAttr("y"), attributes.getAttr("width"), attributes.getAttr("height"));
+        }
+        /////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////
+    }
+    //------------------------------
+    this.restoreCtx();
+    //--------------------------------------------
+}; //draw ends
+
+},{}],16:[function(require,module,exports){
+"use strict";
 module.exports = function drawText(attributes) {
     this.ctx.save();
     this.ctx.fillStyle = attributes.getAttr("color");
@@ -876,7 +896,7 @@ module.exports = function drawText(attributes) {
     this.ctx.restore();
 };
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 "use strict";
 // import BaseShape from "../../baseShape/BaseShape.js";
 const BaseShape2 = require('../../baseShape/BaseShape');
@@ -892,7 +912,7 @@ module.exports = class Arc extends BaseShape2 {
     } //draw ends
 };
 
-},{"../../baseShape/BaseShape":10}],17:[function(require,module,exports){
+},{"../../baseShape/BaseShape":10}],18:[function(require,module,exports){
 "use strict";
 //import Shape from "../../../shapesModuleOld/shape/Shape.js";
 const BaseShape3 = require('../../baseShape/BaseShape');
@@ -906,7 +926,7 @@ module.exports = class Rectangle extends BaseShape3 {
     } //draw ends
 };
 
-},{"../../baseShape/BaseShape":10}],18:[function(require,module,exports){
+},{"../../baseShape/BaseShape":10}],19:[function(require,module,exports){
 "use strict";
 const BaseShape = require('../../baseShape/BaseShape');
 module.exports = class Text extends BaseShape {
