@@ -14,13 +14,13 @@ module.exports = class Text extends BaseShape {
         const ans = metal.drawText(this.attributes);
     } //draw ends
     widen(fromSecond = 1, toSecond = 10, fromWidth = 100, toWidth = 200) {
-        const w = this.generators.getCounter("fontSize", fromSecond, toSecond, fromWidth, toWidth, []);
-        this.animations.add(w);
+        const w = this.generators.addCounter("fontSize", fromSecond, toSecond, fromWidth, toWidth, []);
+        this.animations.push(w);
         return w;
     }
     heighten(fromSecond = 1, toSecond = 10, fromWidth = 100, toWidth = 200) {
-        const w = this.generators.getCounter("fontSize", fromSecond, toSecond, fromWidth, toWidth, []);
-        this.animations.add(w);
+        const w = this.generators.addCounter("fontSize", fromSecond, toSecond, fromWidth, toWidth, []);
+        this.animations.push(w);
         return w;
     }
 };

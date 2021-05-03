@@ -63,27 +63,25 @@ module.exports = class BaseShape {
         this.animations.push(ly);
         return true;
     }
-    widen(fromSecond = 1, toSecond = 10, fromWidth = 100, toWidth = 200) {
-        const w = this.generators.addCounter("width", fromSecond, toSecond, fromWidth, toWidth, []);
+    simpleCounter(attribToAnimate = "x", fromSecond = 1, toSecond = 10, from = 100, to = 200) {
+        const w = this.generators.addCounter(attribToAnimate, fromSecond, toSecond, from, to, []);
         this.animations.push(w);
         return w;
     }
-    heighten(fromSecond, toSecond, fromHeight, toHeight) {
-        const h = this.generators.addCounter("height", fromSecond, toSecond, fromHeight, toHeight, []);
-        this.animations.push(h);
-        return h;
+    widen(fromSecond = 1, toSecond = 10, fromWidth = 100, toWidth = 200) {
+        return this.simpleCounter("width", fromSecond, toSecond, fromWidth, toWidth);
+    }
+    heighten(fromSecond = 1, toSecond = 10, fromWidth = 100, toWidth = 200) {
+        return this.simpleCounter("height", fromSecond, toSecond, fromWidth, toWidth);
     }
     scale(fromSecond, toSecond, fromWidth, toWidth, fromHeight, toHeight) {
-        const w = this.generators.addCounter("width", fromSecond, toSecond, fromWidth, toWidth, []);
-        this.animations.push(w);
+        this.simpleCounter("width", fromSecond, toSecond, fromWidth, toWidth);
         //----------------------------
-        const h = this.generators.addCounter("height", fromSecond, toSecond, fromHeight, toHeight, []);
-        this.animations.push(h);
+        this.simpleCounter("height", fromSecond, toSecond, fromHeight, toHeight);
         return true;
     }
     rotate(fromSecond = 1, toSecond = 5, from = 1, to = 100) {
-        const w = this.generators.addCounter("currentRotateAngle", fromSecond, toSecond, from, to, []);
-        this.animations.push(w);
+        const w = this.simpleCounter("currentRotateAngle", fromSecond, toSecond, from, to);
         return w;
     }
 };

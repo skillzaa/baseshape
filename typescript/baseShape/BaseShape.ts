@@ -80,34 +80,32 @@ moveDiagonal(fromSecond=1,toSecond=5,fromX=1,toX=100,fromY=1,toY=100):boolean{
   this.animations.push(ly);   
   return true;    
 }
-
+protected simpleCounter(attribToAnimate="x",fromSecond:number=1,toSecond:number=10,from:number=100,to:number=200):Counter{
+  const w = this.generators.addCounter(
+    attribToAnimate,fromSecond,toSecond,from, to,[]);
+this.animations.push(w);
+return w;    
+} 
 widen(fromSecond:number=1,toSecond:number=10,fromWidth:number=100,toWidth:number=200):Counter{
-  const w = this.generators.addCounter(
-      "width",fromSecond,toSecond,fromWidth, toWidth,[]);
-  this.animations.push(w);
-  return w;    
+  return this.simpleCounter("width",fromSecond,toSecond
+  ,fromWidth,toWidth);    
 }
-heighten(fromSecond:number,toSecond:number,fromHeight:number,toHeight:number):Counter{
-  const h = this.generators.addCounter(
-    "height",fromSecond,toSecond,fromHeight,toHeight,[]);
-  this.animations.push(h);    
-  return h;    
+heighten(fromSecond:number=1,toSecond:number=10,fromWidth:number=100,toWidth:number=200):Counter{
+  return this.simpleCounter("height",fromSecond,toSecond
+  ,fromWidth,toWidth);    
 }
+
 scale(fromSecond:number,toSecond:number,fromWidth:number,toWidth:number,fromHeight:number,toHeight:number):boolean{
-  const w = this.generators.addCounter(
-      "width",fromSecond,toSecond,fromWidth, toWidth,[]);
-  this.animations.push(w);    
+  this.simpleCounter("width",fromSecond,toSecond
+  ,fromWidth,toWidth); 
 //----------------------------
-  const h = this.generators.addCounter(
-      "height",fromSecond,toSecond,fromHeight,toHeight,[]);
-  this.animations.push(h);   
+  this.simpleCounter("height",fromSecond,toSecond
+  ,fromHeight,toHeight);   
   return true;    
 }
 rotate(fromSecond:number=1, toSecond:number=5,from:number=1,to:number=100):Counter{
-      
-  const w = this.generators.addCounter(
-      "currentRotateAngle",fromSecond,toSecond,from,to,[]);
-  this.animations.push(w);    
+  const w = this.simpleCounter("currentRotateAngle",fromSecond,toSecond
+  ,from,to);    
   return w;
 }
   

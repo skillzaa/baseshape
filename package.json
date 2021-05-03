@@ -1,6 +1,6 @@
 {
   "name": "shapes99",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "",
   "main": "./src/Shapes.js",
   "type": "module",

@@ -16,15 +16,15 @@ draw(metal) {
 } //draw ends
 
 widen(fromSecond:number=1,toSecond:number=10,fromWidth:number=100,toWidth:number=200):Counter{
-  const w = this.generators.getCounter(
+  const w = this.generators.addCounter(
       "fontSize",fromSecond,toSecond,fromWidth, toWidth,[]);
-  this.animations.add(w);
+  this.animations.push(w);
   return w;    
 }
 heighten(fromSecond:number=1,toSecond:number=10,fromWidth:number=100,toWidth:number=200):Counter{
-  const w = this.generators.getCounter(
+  const w = this.generators.addCounter(
       "fontSize",fromSecond,toSecond,fromWidth, toWidth,[]);
-  this.animations.add(w);
+  this.animations.push(w);
   return w;    
 }
   //////////////////////////classsss-----------------
