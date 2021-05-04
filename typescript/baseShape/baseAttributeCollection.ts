@@ -36,7 +36,7 @@ attributes.add("lineDashGap", 0);
 attributes.add("drawBoundingRectangle", true);    
 attributes.add("boundingRectangleColor", "red");    
 attributes.add("boundingRectanglePadding", 20);    
-//--18 items
+//--20 items
 return attributes;
 }
 //====================================================

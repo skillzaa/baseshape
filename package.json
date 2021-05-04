@@ -7,7 +7,7 @@
   "scripts": {
     "dist": "rollup -c",
     "test": "jest ",
-    "bro" : "browserify ./src/index.js -o ./dist/bundle.js"
+    "bro": "browserify ./src/index.js -o ./dist/bundle.js"
   },
   "author": "Bilal Tariq",
   "license": "ISC",
@@ -20,6 +20,6 @@
   },
   "dependencies": {
     "@bilzaa.com/arrayofobjects": "^1.1.5",
-    "aninumber": "^1.0.1"
+    "aninumber": "^1.1.1"
   }
 }
