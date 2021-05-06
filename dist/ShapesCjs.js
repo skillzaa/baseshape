@@ -1,3 +1,5 @@
+'use strict';
+
 class Validator {
     constructor() {
     } //const
@@ -561,4 +563,4 @@ class Shapes {
     }
 }
 
-export default Shapes;
+module.exports = Shapes;

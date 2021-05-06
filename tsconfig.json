@@ -2,7 +2,7 @@
   "compilerOptions": {
     
     "target": "ES2016",   
-    "module": "es2020",            
+    "module": "Es2020",            
              
      "declaration": true,                   
     

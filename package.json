@@ -1,14 +1,14 @@
 {
   "name": "shapes99",
-  "version": "0.0.9",
+  "version": "0.3.9",
   "description": "",
-  "main": "./src/Shapes.js",
+  "main": "./dist/Shapes.js",
   "type": "module",
   "scripts": {
-    "dist": "rollup -c",
-    "test": "jest ",
-    "bro": "browserify ./src/index.js -o ./dist/bundle.js"
-  },
+    "dist": "rollup -c rollup.config.js",
+    "predist": "rollup -c rollup.cjs.js",
+    "test": "jest "
+     },
   "author": "Bilal Tariq",
   "license": "ISC",
   "devDependencies": {
@@ -19,7 +19,7 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
-    "@bilzaa.com/arrayofobjects": "^1.1.5",
-    "aninumber": "^1.1.1"
+    "@bilzaa.com/arrayofobjects": "^1.1.7",
+    "aninumber": "^1.1.2"
   }
 }

@@ -1,5 +1,5 @@
 const log = console.log;
-const Shapes= require('../src/Shapes');
+const Shapes= require('../dist/ShapesCjs');
 const shapes = new Shapes();
 
 const rect = shapes.addRectangle("rect");
