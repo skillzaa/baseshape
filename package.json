@@ -8,7 +8,7 @@
     "dist": "rollup -c rollup.config.js",
     "predist": "rollup -c rollup.cjs.js",
     "test": "jest "
-     },
+  },
   "author": "Bilal Tariq",
   "license": "ISC",
   "devDependencies": {
@@ -19,7 +19,7 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
-    "@bilzaa.com/arrayofobjects": "^1.1.7",
+    "@bilzaa.com/arrayofobjects": "^1.1.8",
     "aninumber": "^1.1.2"
   }
 }

@@ -11,6 +11,11 @@ this.attributes.add("closingAngle", 360);
 draw(metal) {
   const ans = metal.drawArc(this.attributes);
 } //draw ends
+heighten(fromSecond:number=1,toSecond:number=10,from:number=100,to:number=200):Counter{
+  return this.simpleCounter("width",fromSecond,toSecond
+  ,from,to);    
+}
+
 //---------------------------------------  
  
   //////////////////////////classsss-----------------

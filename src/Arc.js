@@ -9,4 +9,7 @@ export default class Arc extends BaseShape {
     draw(metal) {
         const ans = metal.drawArc(this.attributes);
     } //draw ends
+    heighten(fromSecond = 1, toSecond = 10, from = 100, to = 200) {
+        return this.simpleCounter("width", fromSecond, toSecond, from, to);
+    }
 }
