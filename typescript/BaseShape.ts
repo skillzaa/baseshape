@@ -2,7 +2,6 @@ import ArrayOfObjects from '../node_modules/@bilzaa.com/arrayofobjects/dist/Arra
 
 import Generators from '../node_modules/aninumber/dist/Generators.js';
 
-
 export default class BaseShape{  
 public attributes:ArrayOfObjects; 
 animations: object[];
